@@ -63,7 +63,7 @@ export const accounts = [
 
 export const menus: IMenu[] = [
   {
-    title: "dashboard",
+    title: "toefl_challenge",
     icon: Gauge,
     children: [
       {
@@ -73,125 +73,143 @@ export const menus: IMenu[] = [
         to: "/dashboard/overview",
       },
       {
-        title: "analysis",
-        label: "9",
+        title: "registrations",
         icon: ChartNoAxesCombined,
-        to: "/dashboard/analysis",
-      },
-      {
-        title: "workplace",
-        icon: Orbit,
-        to: "/dashboard/workplace",
+        to: "/toefl_challenge/registrations",
       },
     ],
     to: "/dashboard",
   },
-  {
-    title: "forms",
-    label: "12",
-    icon: MessagesSquare,
-    children: [
-      {
-        title: "basic_form",
-        label: "23",
-        icon: ArchiveX,
-        to: "/form/basic-form",
-      },
-      {
-        title: "step_form",
-        icon: Trash2,
-        to: "/form/step-form",
-      },
-      {
-        title: "advanced_form",
-        icon: Archive,
-        to: "/form/advanced-form",
-      },
-    ],
-    to: "/form",
-  },
-  {
-    title: "table",
-    icon: MessagesSquare,
-    children: [
-      {
-        title: "basic_list",
-        label: "128",
-        icon: List,
-        to: "/list/basic-list",
-      },
-      {
-        title: "table_list",
-        label: "972",
-        icon: TableProperties,
-        to: "/list/table-list",
-      },
-      {
-        title: "card_list",
-        label: "8",
-        icon: ListTree,
-        to: "/list/card-list",
-      },
-    ],
-    to: "/list",
-  },
-  {
-    title: "charts",
-    icon: MessagesSquare,
-    children: [
-      {
-        title: "area_chart",
-        icon: ChartArea,
-        to: "/charts/area-chart",
-      },
-      {
-        title: "bar_chart",
-        icon: ChartBar,
-        to: "/charts/bar-chart",
-      },
-      {
-        title: "line_chart",
-        icon: ChartLine,
-        to: "/charts/line-chart",
-      },
-      {
-        title: "pie_chart",
-        icon: ChartPie,
-        to: "/charts/pie-chart",
-      },
-      {
-        title: "radar_chart",
-        icon: Radar,
-        to: "/charts/radar-chart",
-      },
-      {
-        title: "radial_chart",
-        icon: Radical,
-        to: "/charts/radial-chart",
-      },
-      {
-        title: "tooltip_chart",
-        icon: CircleDot,
-        to: "/charts/tooltip",
-      },
-    ],
-    to: "/charts",
-  },
-  {
-    title: "settings",
-    icon: Settings,
-    to: "/settings",
-  },
-  {
-    title: "system",
-    icon: Info,
-    children: [
-      {
-        title: "about",
-        icon: Info,
-        to: "/system/about",
-      },
-    ],
-    to: "/system",
-  },
+  // {
+  //   title: "dashboard",
+  //   icon: Gauge,
+  //   children: [
+  //     {
+  //       title: "overview",
+  //       label: "128",
+  //       icon: Gauge,
+  //       to: "/dashboard/overview",
+  //     },
+  //     {
+  //       title: "analysis",
+  //       label: "9",
+  //       icon: ChartNoAxesCombined,
+  //       to: "/dashboard/analysis",
+  //     },
+  //     {
+  //       title: "workplace",
+  //       icon: Orbit,
+  //       to: "/dashboard/workplace",
+  //     },
+  //   ],
+  //   to: "/dashboard",
+  // },
+  // {
+  //   title: "forms",
+  //   label: "12",
+  //   icon: MessagesSquare,
+  //   children: [
+  //     {
+  //       title: "basic_form",
+  //       label: "23",
+  //       icon: ArchiveX,
+  //       to: "/form/basic-form",
+  //     },
+  //     {
+  //       title: "step_form",
+  //       icon: Trash2,
+  //       to: "/form/step-form",
+  //     },
+  //     {
+  //       title: "advanced_form",
+  //       icon: Archive,
+  //       to: "/form/advanced-form",
+  //     },
+  //   ],
+  //   to: "/form",
+  // },
+  // {
+  //   title: "table",
+  //   icon: MessagesSquare,
+  //   children: [
+  //     {
+  //       title: "basic_list",
+  //       label: "128",
+  //       icon: List,
+  //       to: "/list/basic-list",
+  //     },
+  //     {
+  //       title: "table_list",
+  //       label: "972",
+  //       icon: TableProperties,
+  //       to: "/list/table-list",
+  //     },
+  //     {
+  //       title: "card_list",
+  //       label: "8",
+  //       icon: ListTree,
+  //       to: "/list/card-list",
+  //     },
+  //   ],
+  //   to: "/list",
+  // },
+  // {
+  //   title: "charts",
+  //   icon: MessagesSquare,
+  //   children: [
+  //     {
+  //       title: "area_chart",
+  //       icon: ChartArea,
+  //       to: "/charts/area-chart",
+  //     },
+  //     {
+  //       title: "bar_chart",
+  //       icon: ChartBar,
+  //       to: "/charts/bar-chart",
+  //     },
+  //     {
+  //       title: "line_chart",
+  //       icon: ChartLine,
+  //       to: "/charts/line-chart",
+  //     },
+  //     {
+  //       title: "pie_chart",
+  //       icon: ChartPie,
+  //       to: "/charts/pie-chart",
+  //     },
+  //     {
+  //       title: "radar_chart",
+  //       icon: Radar,
+  //       to: "/charts/radar-chart",
+  //     },
+  //     {
+  //       title: "radial_chart",
+  //       icon: Radical,
+  //       to: "/charts/radial-chart",
+  //     },
+  //     {
+  //       title: "tooltip_chart",
+  //       icon: CircleDot,
+  //       to: "/charts/tooltip",
+  //     },
+  //   ],
+  //   to: "/charts",
+  // },
+  // {
+  //   title: "settings",
+  //   icon: Settings,
+  //   to: "/settings",
+  // },
+  // {
+  //   title: "system",
+  //   icon: Info,
+  //   children: [
+  //     {
+  //       title: "about",
+  //       icon: Info,
+  //       to: "/system/about",
+  //     },
+  //   ],
+  //   to: "/system",
+  // },
 ] as const

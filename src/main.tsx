@@ -49,7 +49,7 @@ deferRender().then(() => {
           fallbackElement={<Fallback />}
         />
         <DevMonitorPanel />
-        <ThemeCustomizer className="fixed bottom-4 right-4 z-[9999]" />
+        {/* <ThemeCustomizer className="fixed bottom-4 right-4 z-[9999]" /> */}
       </RootProviders>
       <ClickToComponent editor={env.VITE_EDITOR} />
     </React.StrictMode>,

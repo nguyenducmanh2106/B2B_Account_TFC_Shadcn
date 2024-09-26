@@ -12,9 +12,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useUser } from "@/hooks/query/use-user"
+import { useAtom } from "jotai"
+import { currentUserAtom } from "@/atoms/user-atom"
+import { getToken } from "@/storages/local-storage"
 
 export function Component() {
-  const user = useUser()
+  // const user = useUser()
+  const isLogin = Boolean(getToken());
 
   return (
     <div className="flex h-screen flex-col justify-between">
@@ -28,7 +32,7 @@ export function Component() {
               <Search />
             </div>
             <div className="flex items-center gap-5">
-              {user.data ? (
+              {isLogin ? (
                 <>
                   <Button asChild variant="ghost" size="lg">
                     <Link to="/dashboard">Dashboard</Link>
@@ -59,7 +63,9 @@ export function Component() {
 }
 
 function UserDropdown() {
-  const user = useUser()
+  // const user = useUser()
+  const [user, setUser] = useAtom(currentUserAtom)
+  console.log(user)
 
   const submit = useSubmit()
   const formRef = useRef<HTMLFormElement>(null)
@@ -68,24 +74,23 @@ function UserDropdown() {
       <DropdownMenuTrigger asChild>
         <Button asChild variant="secondary">
           <Link
-            to={`/users/${user.data?.username}`}
+            to={`/users/${user?.username}`}
             // this is for progressive enhancement
             onClick={(e) => e.preventDefault()}
             className="flex items-center gap-2"
           >
             <img
               className="size-8 rounded-full object-cover"
-              alt={user.data?.username}
-              src={user.data?.avatar}
+              alt={user?.username ?? ""}
             />
-            <span className="font-bold">{user.data?.username}</span>
+            <span className="font-bold">{user?.username}</span>
           </Link>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
         <DropdownMenuContent sideOffset={8} align="start">
           <DropdownMenuItem asChild>
-            <Link to={`/users/${user.data?.username}`}>Profile</Link>
+            <Link to={`/users/${user?.username}`}>Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem
             asChild

@@ -2,24 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { PICType } from "./PICType";
 import type { PolicyModel } from "./PolicyModel";
-import type { UserMetadataModel } from "./UserMetadataModel";
 
-export type UserModel = {
+export type B2BAuthModel = {
   id?: string;
   username?: string | null;
   fullname?: string | null;
   email?: string | null;
   dob?: string;
   phone?: string | null;
-  metadata?: Array<UserMetadataModel> | null;
   roleId?: string | null;
   roleName?: string | null;
   syncId?: string;
   isDisabled?: boolean;
-  iigDepartmentId?: string | null;
-  iigDepartmentName?: string | null;
   permissions?: Array<PolicyModel> | null;
   createdOnDate?: string;
+  picType?: PICType;
+  objectId?: string | null;
 };
 

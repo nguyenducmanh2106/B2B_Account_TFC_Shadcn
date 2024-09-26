@@ -68,8 +68,8 @@ export { TemplateType } from './models/TemplateType';
 export type { TransactionUpdateModel } from './models/TransactionUpdateModel';
 export type { UserChangePassword } from './models/UserChangePassword';
 export type { UserMetadataModel } from './models/UserMetadataModel';
-export type { UserModel } from './models/UserModel';
 export type { WardModel } from './models/WardModel';
+export type { B2BAuthModel } from './models/B2BAuthModel';
 
 export * as AgencyService from './services/AgencyService';
 export * as AministrativeDivisionsService from './services/AministrativeDivisionsService';
@@ -95,4 +95,3 @@ export * as SchoolPermissionService from './services/SchoolPermissionService';
 export * as ScoreReferenceService from './services/ScoreReferenceService';
 export * as SystemSettingService from './services/SystemSettingService';
 export * as TransactionService from './services/TransactionService';
-export * as UserService from './services/UserService';

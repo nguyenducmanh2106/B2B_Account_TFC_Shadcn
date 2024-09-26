@@ -2,13 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { Link, Navigate, useNavigate } from "react-router-dom"
+import { Link, redirect, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import type { z } from "zod"
 
 import { Icons } from "@/components/icons"
 import { Logo } from "@/components/icons/logo"
-import LanguageSwitch from "@/components/language-switch"
+import { LanguageSwitch } from "@/components/language-switch"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -21,75 +21,56 @@ import {
 import { Input } from "@/components/ui/input"
 // import { useUserMutation } from "@/hooks/query/use-user"
 import { Code, type ResponseData } from "@/api"
+import type { WSO2ResponseModel } from "@/api/WSO2ResponseModel"
 import { useUserMutation } from "@/hooks/query/use-user"
 import { cn } from "@/lib/utils"
 import type { ILoginForm } from "@/models/user"
 import { loginFormSchema } from "@/models/user"
-import type { TokenReponse } from "@/api/models/TokenResponse"
 import { getToken, setToken } from "@/storages/local-storage"
-
+export const loader = async () => {
+  const isLogin = Boolean(getToken());
+  if (isLogin) {
+    return redirect("/dashboard")
+  }
+  return isLogin
+}
 export function Component() {
   const { t } = useTranslation()
-  const isLogin = Boolean(getToken());
-  return <>
-    {!isLogin ?
-      <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-          <div className="absolute inset-0 bg-zinc-900" />
-          <div className="relative z-20 flex items-center text-lg font-medium">
-            <Logo className="mr-2 size-6" />
-            {t("login.acme_inc")}
-          </div>
-          <div className="relative z-20 mt-auto">
-            <blockquote className="space-y-2">
-              <p className="text-lg">
-                {t("login.intro.quote")}
-              </p>
-              <footer className="text-sm">
-                {t("login.intro.name")}
-              </footer>
-            </blockquote>
-          </div>
+  return <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+      <div className="absolute inset-0 bg-zinc-900" />
+      <div className="relative z-20 flex items-center text-lg font-medium">
+        <Logo className="mr-2 size-6" />
+        {t("login.acme_inc")}
+      </div>
+      <div className="relative z-20 mt-auto">
+        <blockquote className="space-y-2">
+          <p className="text-lg">
+            {t("login.intro.quote")}
+          </p>
+          <footer className="text-sm">
+            {t("login.intro.name")}
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+    <div className="lg:p-8">
+      <div className="absolute right-0 top-0 p-4">
+        <LanguageSwitch />
+      </div>
+      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {t("login.title_login")}
+          </h1>
+          {/* <p className="text-sm text-muted-foreground">
+            {t("login.enter_email")}
+          </p> */}
         </div>
-        <div className="lg:p-8">
-          <div className="absolute right-0 top-0 p-4">
-            <LanguageSwitch />
-          </div>
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">
-                {t("login.create_account")}
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                {t("login.enter_email")}
-              </p>
-            </div>
-            <UserAuthForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              {t("login.terms_of_service")}
-              {" "}
-              <Link
-                to="/terms"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                {t("login.terms_of_service")}
-              </Link>
-              {" "}
-              and
-              {" "}
-              <Link
-                to="/privacy"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                {t("login.privacy_policy")}
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
-      </div> : <Navigate replace={true} to='/dashboard' />
-    }
-  </>
+        <UserAuthForm />
+      </div>
+    </div>
+  </div>
 }
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
@@ -111,7 +92,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     toast.promise(loginMutation.mutateAsync(values), {
       position: "top-center",
       loading: t("login.loading"),
-      success: (response: ResponseData<TokenReponse>) => {
+      success: (response: ResponseData<WSO2ResponseModel>) => {
         if (response.code === Code._200) {
           setToken(response.data?.access_token ?? "")
           navigate("/dashboard", {
@@ -181,12 +162,12 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               {loginMutation.isPending && (
                 <Icons.spinner className="mr-2 size-4 animate-spin" />
               )}
-              {t("login.sign_in_with_email")}
+              {t("login.sign_in")}
             </Button>
           </div>
         </form>
       </Form>
-      <div className="relative">
+      {/* <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
@@ -202,7 +183,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         disabled={loginMutation.isPending}
       >
         {t("login.github")}
-      </Button>
+      </Button> */}
     </div>
   )
 }

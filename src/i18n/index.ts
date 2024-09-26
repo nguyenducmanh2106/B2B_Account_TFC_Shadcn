@@ -8,6 +8,7 @@ import { initReactI18next } from "react-i18next"
 // for passing in lng and translations on init
 import en from "./locales/en.json"
 import zhCN from "./locales/zh-CN.json"
+import viVN from "./locales/vi-VN.json"
 
 const resources = {
   en: {
@@ -16,6 +17,9 @@ const resources = {
   zh: {
     translation: zhCN,
   },
+  vi:{
+    translation: viVN,
+  }
 }
 export const languages = [
   {
@@ -23,10 +27,15 @@ export const languages = [
     label: "English",
     icon: "🇬🇧",
   },
+  // {
+  //   value: "zh",
+  //   label: "中文",
+  //   icon: "🇨🇳",
+  // },
   {
-    value: "zh",
-    label: "中文",
-    icon: "🇨🇳",
+    value: "vi",
+    label: "Tiếng Việt",
+    icon: "vi",
   },
 ]
 i18n

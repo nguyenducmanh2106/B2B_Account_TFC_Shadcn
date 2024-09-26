@@ -2,9 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 
 import { apiFetch } from "@/lib/api-fetch"
 import type { IUserInfo } from "@/models/user"
-import type { ResponseData, B2BLoginModel, UserModel } from "@/api"
-import { getUser2 } from "@/api/services/UserService"
-import { postB2BAuth } from "@/api/services/B2BAuthService"
+import type { ResponseData, B2BLoginModel, B2BAuthModel } from "@/api"
+import { getB2BAuth2, postB2BAuth } from "@/api/services/B2BAuthService"
 import type { WSO2ResponseModel } from "@/api/WSO2ResponseModel"
 
 // export function useUser() {
@@ -16,7 +15,7 @@ import type { WSO2ResponseModel } from "@/api/WSO2ResponseModel"
 export function useUser() {
   return useQuery({
     queryKey: ["userInfo"],
-    queryFn: async () => getUser2() as ResponseData<UserModel>,
+    queryFn: async () => getB2BAuth2() as ResponseData<B2BAuthModel>,
   })
 }
 

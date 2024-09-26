@@ -90,6 +90,8 @@
     "update_preferences": "Update preferences"
   },
   "login": {
+    "title_login": "Login",
+    "sign_in": "Login",
     "create_account": "Create an account",
     "enter_email": "Enter your email below to create your account",
     "terms_of_service": "Terms of Service",
@@ -261,7 +263,9 @@
     "tooltip_chart": "Tooltip Chart",
     "about": "About",
     "table": "Table",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "toefl_challenge": "Toefl Challenge",
+    "registrations": "Danh sách đăng ký"
   },
   "user_nav": {
     "logout": "Log out",
