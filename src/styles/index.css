@@ -78,6 +78,11 @@
   color: #0052cc;
 }
 
+.form-required-icon:after {
+  content: '*';
+  color: hsl(var(--destructive))
+}
+
 div.ag-theme-balham,
 div.ag-theme-balham-dark {
   --ag-font-size: .875rem;

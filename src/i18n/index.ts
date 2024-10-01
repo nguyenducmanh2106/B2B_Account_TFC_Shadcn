@@ -17,7 +17,7 @@ const resources = {
   zh: {
     translation: zhCN,
   },
-  vi:{
+  vi: {
     translation: viVN,
   }
 }
@@ -51,9 +51,10 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
+    lng: 'vi',
     resources,
-    fallbackLng: "en",
-    debug: true,
+    fallbackLng: "vi",
+    debug: false,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },

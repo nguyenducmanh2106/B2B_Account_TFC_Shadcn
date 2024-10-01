@@ -123,6 +123,7 @@ async function getHeaders(options: ApiRequestOptions): Promise<Headers> {
     const username = await resolve(options, OpenAPI.USERNAME);
     const password = await resolve(options, OpenAPI.PASSWORD);
     const additionalHeaders = await resolve(options, OpenAPI.HEADERS);
+    const tenant = await resolve(options, OpenAPI.TENANT);
 
     const defaultHeaders = Object.entries({
         Accept: 'application/json',
@@ -139,6 +140,9 @@ async function getHeaders(options: ApiRequestOptions): Promise<Headers> {
 
     if (isStringWithValue(token)) {
         headers.append('Authorization', `Bearer ${token}`);
+    }
+    if (isStringWithValue(tenant)) {
+        headers.append('Tenant', tenant);
     }
 
     if (isStringWithValue(username) && isStringWithValue(password)) {

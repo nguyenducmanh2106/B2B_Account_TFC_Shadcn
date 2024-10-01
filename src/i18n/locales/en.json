@@ -109,8 +109,8 @@
     "password": "Password",
     "acme_inc": "Acme Inc",
     "intro": {
-      "quote": "This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before.",
-      "name": "Sofia Davis"
+      "quote": "Tổ chức giao dục",
+      "name": "IIG Việt Nam"
     },
     "signin_with_github": "Sign in with Github",
     "signin_with_google": "Sign in with Google",
@@ -264,7 +264,7 @@
     "about": "About",
     "table": "Table",
     "permissions": "Permissions",
-    "toefl_challenge": "Toefl Challenge",
+    "toefl_challenge": "TOEFL Challenge",
     "registrations": "Danh sách đăng ký"
   },
   "user_nav": {

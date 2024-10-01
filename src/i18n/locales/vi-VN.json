@@ -109,8 +109,8 @@
     "password": "Mật khẩu",
     "acme_inc": "Acme Inc",
     "intro": {
-      "quote": "Thư viện này đã giúp tôi tiết kiệm vô số giờ làm việc và giúp tôi hoàn thành các thiết kế ấn tượng cho khách hàng nhanh hơn bao giờ hết.",
-      "name": "Sofia Davis"
+      "quote": "Tổ chức giáo dục",
+      "name": "IIG Việt Nam"
     },
     "signin_with_github": "Đăng nhập với Github",
     "signin_with_google": "Đăng nhập với Google",
@@ -264,7 +264,7 @@
     "about": "Giới thiệu",
     "table": "Bảng",
     "permissions": "Quyền",
-    "toefl_challenge": "Thử thách TOEFL",
+    "toefl_challenge": "TOEFL Challenge",
     "registrations": "Danh sách đăng ký"
   },
   "user_nav": {

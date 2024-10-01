@@ -16,6 +16,7 @@ type Config = {
     PASSWORD?: string | Resolver<string>;
     HEADERS?: Headers | Resolver<Headers>;
     ENCODE_PATH?: (path: string) => string;
+    TENANT: string;
 }
 
 export const OpenAPI: Config = {
@@ -28,4 +29,5 @@ export const OpenAPI: Config = {
     PASSWORD: undefined,
     HEADERS: undefined,
     ENCODE_PATH: undefined,
+    TENANT: import.meta.env.VITE_TENANT,
 };

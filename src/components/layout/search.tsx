@@ -20,8 +20,10 @@ import {
 } from "../ui/command"
 import { Separator } from "../ui/separator"
 import { menus } from "./sidebar/data"
+import { useTranslation } from "react-i18next"
 
 export function Search({ ...props }: ButtonProps & DialogProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
   const { setTheme } = useTheme()
@@ -88,7 +90,8 @@ export function Search({ ...props }: ButtonProps & DialogProps) {
                   }}
                 >
                   <menuItem.icon className="mr-2 size-4" />
-                  {menuItem.title}
+                  {/* {menuItem.title} */}
+                  {t(`menus.${menuItem.title}` as never)}
                   {menuItem.label && (
                     <span
                       className={cn(

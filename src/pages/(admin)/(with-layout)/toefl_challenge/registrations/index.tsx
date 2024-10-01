@@ -7,11 +7,13 @@ import type { ColDef, ColGroupDef, GridReadyEvent, IServerSideDatasource } from 
 import { AgGridReact } from 'ag-grid-react';
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { ImportRegistration } from "./components/import-registration";
+import { Button } from "@/components/ui/button";
 
 export function Component() {
   const [user, setUser] = useAtom(currentUserAtom)
   const gridContainerRef = useRef(null);
-  const containerStyle = useMemo(() => ({ width: '100%', height: 'calc(100vh - 176px)' }), []);
+  const containerStyle = useMemo(() => ({ width: '100%', height: 'calc(100vh - 216px)' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const defaultPageSize = 20 as number;
   const gridRef = useRef<AgGridReact<RegistrationModel>>(null);
@@ -46,10 +48,10 @@ export function Component() {
         lineHeight: '50px'
       },
       cellRendererParams: (params: any) => {
-        console.log(params);
+        // console.log(params);
       },
       cellRenderer: (params: any) => {
-        console.log(gridRef.current);
+        // console.log(gridRef.current);
         return (
           <Checkbox
             defaultChecked={params.node.selected}
@@ -250,7 +252,6 @@ export function Component() {
           // if (response.success) {
           // eslint-disable-next-line no-constant-condition
           if (response && response.code === 200) {
-            console.log(response)
             // call the success callback
             params.success({
               rowData: response.data,
@@ -268,7 +269,6 @@ export function Component() {
   };
 
   const [systemSettings, setSytemSettings] = useAtom(systemSettingAtom);
-  console.log(systemSettings)
   /**
    * get data from api
    * @param skip 
@@ -298,7 +298,8 @@ export function Component() {
       page: pageCal,
       size: limit,
       textSearch: '',
-      year: systemSettings?.currentExamYear
+      year: systemSettings?.currentExamYear,
+      provinceId: '00000000-0000-0000-0000-000000000000',
     }
 
     //nếu tài khoản là đại lý
@@ -309,6 +310,7 @@ export function Component() {
     //nếu tài khoản là trường
     if (user?.picType === PICType._2) {
       objFilter["schoolId"] = user?.objectId ?? undefined
+      delete objFilter["provinceId"]
     }
 
     const response: ResponseData = await getRegistration(JSON.stringify(objFilter)) as ResponseData<RegistrationModel[]>
@@ -333,9 +335,20 @@ export function Component() {
     }
   }
 
+
+
+  // const { onUpload, progresses, uploadedFiles, isUploading } = useUploadFile(
+  //   "imageUploader",
+  //   { defaultUploadedFiles: [] }
+  // )
+  const [openForm, setOpenForm] = useState(false)
   return (
     <div>
-      <div className="tableViewContainer" ref={gridContainerRef}>
+      <Button variant="outline" onClick={() => setOpenForm(true)}>Đăng ký thi</Button>
+      {openForm && <ImportRegistration open={openForm}
+        setOpen={setOpenForm}
+      />}
+      <div className="tableViewContainer mt-[6px]" ref={gridContainerRef}>
         <div style={containerStyle}>
           <div style={gridStyle} className="ag-theme-balham">
             <AgGridReact<RegistrationModel>
