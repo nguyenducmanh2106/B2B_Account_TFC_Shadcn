@@ -22,7 +22,11 @@
     "username_max_length": "Tên người dùng không được dài hơn 30 ký tự.",
     "email_required": "Vui lòng chọn một email để hiển thị.",
     "notification_type_required": "Bạn cần chọn một loại thông báo.",
-    "item_selection_required": "Bạn phải chọn ít nhất một mục."
+    "item_selection_required": "Bạn phải chọn ít nhất một mục.",
+    "duplicate": "Trùng",
+    "invalid": "Không hợp lệ",
+    "valid": "Hợp lệ",
+    "total": "Tổng"
   },
   "form": {
     "update_account": "Cập nhật tài khoản",

@@ -1,28 +1,30 @@
+import { Code, SchoolType, type ResponseData } from "@/api";
+import { getRegistration5 } from "@/api/services/RegistrationService";
 import { systemSettingAtom } from "@/atoms/system-setting-atom";
 import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Combobox } from "@/components/ui/combobox";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useAministrativeDivisionProvinceId } from "@/hooks/query/use-aministrative-division";
 import { useExam, useExamId } from "@/hooks/query/use-exam";
-import { cn } from "@/lib/utils";
+import { useImportRegistrationMutation } from "@/hooks/query/use-registration";
+import { useSchool, useSchoolId } from "@/hooks/query/use-school";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { z } from "zod";
 import { FileUploader } from "./file-uploader";
-import { useSchool, useSchoolId } from "@/hooks/query/use-school";
-import { Combobox } from "@/components/ui/combobox";
-import { SchoolType } from "@/api";
+import { Files } from "lucide-react";
 type props = {
     open: boolean,
     setOpen: (value: boolean) => void;
 }
 export function ImportRegistration({ open, setOpen }: props) {
+    const { t } = useTranslation()
+
     const examTypes = [
         { value: '', label: '-Chọn-', },
         { value: '0', label: 'Primary', },
@@ -70,31 +72,52 @@ export function ImportRegistration({ open, setOpen }: props) {
         examType: z.string({
             required_error: "Không được để trống",
         }),
-        images: z.array(z.instanceof(File)).nonempty("Không được để trống"),
+        files: z.array(z.instanceof(File)).nonempty("Không được để trống"),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            images: [],
+            files: [],
             // items: ["recents", "home"],
         },
     })
 
 
+    const importMutation = useImportRegistrationMutation()
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
 
         console.log(values)
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-                </pre>
-            ),
+        const obj = {
+            ...values,
+            file: values?.files?.length > 0 ? values.files[0] : undefined
+        }
+        toast.promise(importMutation.mutateAsync(obj), {
+            position: "top-center",
+            loading: t("login.loading"),
+            duration: 7000,
+            success: (response: ResponseData) => {
+                if (response.code === Code._200) {
+                    // return t("login.login_successful")
+                    const data = response.data ?? {} as any
+                    setOpen(false)
+                    return (
+                        <div className="flex flex-col">
+                            <span>{t('error.total')}: {data.Total}</span>
+                            <span className="text-[#52c41a]">{t('error.valid')}: {data.Valid}</span>
+                            <span className="text-[#faad14]">{t('error.duplicate')}: {data.Duplicate}</span>
+                            <span className="text-[#ff4d4f]">{t('error.invalid')}: {data.Invalid}</span>
+                        </div>
+                    )
+                }
+                throw new Error(response.message ?? "Import thất bại")
+            },
+            error: (ex: Error) => {
+                return ex.message
+            },
         })
     }
 
@@ -105,7 +128,6 @@ export function ImportRegistration({ open, setOpen }: props) {
         return !(field instanceof z.ZodOptional);
     }
 
-    console.log('render')
 
     const examId = useExamId(form.getValues("examId"))
 
@@ -129,6 +151,44 @@ export function ImportRegistration({ open, setOpen }: props) {
         }
     }
 
+    const downloadFileTemplate = async () => {
+        const examId = form.getValues("examId")
+        if (!examId) {
+            toast("Chưa có cuộc thi", {
+                // description: "Sunday, December 03, 2023 at 9:00 AM",
+                position: "top-center",
+            })
+            return;
+        } else {
+            const response = await getRegistration5(examId);
+            if (response.code === Code._200) {
+                const { base64: base64Data, extention, name } = response.data as any
+                // Tạo một đối tượng Blob từ dữ liệu base64
+                // const blob = new Blob(["data:application/octet-stream;base64," + base64Data], { type: 'application/octet-stream' });
+
+                fetch("data:application/octet-stream;base64," + base64Data).then(e => e.blob()).then(blob => {
+                    // Tạo một URL tạm thời từ Blob
+                    const url = URL.createObjectURL(blob);
+
+                    // Tạo một liên kết tải
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = name + extention; // Đặt tên tệp tải về ở đây
+
+                    // Thêm liên kết vào DOM và kích hoạt sự kiện click
+                    document.body.appendChild(a);
+                    a.click();
+
+                    // Xóa liên kết sau khi tải xong
+                    document.body.removeChild(a);
+                })
+            } else {
+                // message.error(response.message || "Thất bại")
+            }
+        }
+    };
+
     return (
         <Form {...form}>
             <Dialog
@@ -149,7 +209,8 @@ export function ImportRegistration({ open, setOpen }: props) {
                         <DialogHeader>
                             <DialogTitle>Đăng ký thi</DialogTitle>
                             <DialogDescription>
-                                Để dự thi vòng thi trải nghiệm quý trường vui lòng đăng ký theo các thông tin dưới đây
+                                Để dự thi vòng thi trải nghiệm quý trường vui lòng đăng ký theo các thông tin dưới đây<br />
+                                <span className="cursor-pointer text-[#1890ff]" onClick={downloadFileTemplate}>Tải mẫu file</span>
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4 max-h-[400px] sm:max-h-[600px] overflow-y-auto overflow-x-hidden">
@@ -256,7 +317,7 @@ export function ImportRegistration({ open, setOpen }: props) {
                             />
                             <FormField
                                 control={form.control}
-                                name="images"
+                                name="files"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Chọn file tải lên<span className='form-required-icon' /></FormLabel>
